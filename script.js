@@ -86,14 +86,33 @@ function getColumnHeaders(table, myLibrary) {
   });
 }
 
+const form = document.querySelector("form");
+
+form.addEventListener("submit", function(event) {
+  event.preventDefault(); // Stop page from reloading
+
+  // Read form values
+  const bookName = document.querySelector("#bookName").value;
+  const author = document.querySelector("#author").value;
+  const readStatus = document.querySelector("#readStatus").value;
+  
+  if (readStatus == "true") {
+    readStatus === true;
+  } else {
+    readStatus === false;
+  }
+
+  addBookToLibrary(bookName, author, readStatus);
+})
+
 // test
 addBookToLibrary("Harry Potter & the Curse of the Honoured One", "Gojo", true);
 addBookToLibrary("The Great Gatsby", "F. Scott Fitzgerald", true);
-addBookToLibrary("To Kill a Mockingbird", "Harper Lee", false);
-addBookToLibrary("1984", "George Orwell", true);
-addBookToLibrary("Pride and Prejudice", "Jane Austen", false);
-addBookToLibrary("The Catcher in the Rye", "J.D. Salinger", true);
-addBookToLibrary("Brave New World", "Aldous Huxley", false);
-addBookToLibrary("The Lord of the Rings", "J.R.R. Tolkien", true);
-addBookToLibrary("Dune", "Frank Herbert", false);
-addBookToLibrary("The Hobbit", "J.R.R. Tolkien", true);
+// addBookToLibrary("To Kill a Mockingbird", "Harper Lee", false);
+// addBookToLibrary("1984", "George Orwell", true);
+// addBookToLibrary("Pride and Prejudice", "Jane Austen", false);
+// addBookToLibrary("The Catcher in the Rye", "J.D. Salinger", true);
+// addBookToLibrary("Brave New World", "Aldous Huxley", false);
+// addBookToLibrary("The Lord of the Rings", "J.R.R. Tolkien", true);
+// addBookToLibrary("Dune", "Frank Herbert", false);
+// addBookToLibrary("The Hobbit", "J.R.R. Tolkien", true);
