@@ -41,7 +41,7 @@ function createBookTable(myLibrary) {
   // Loop through each book in the library, skipping all but the last entry
   // to avoid duplicating rows already in the table on each addBookToLibrary call
   myLibrary.forEach((objectElement, index) => {
-    if ((index + 1) < myLibrary.length) {
+    if (index + 1 < myLibrary.length) {
       return;
     }
     // Create a new row in the table for this book
@@ -76,7 +76,6 @@ function createBookTable(myLibrary) {
     // Append button element to last cell of current row
     const cell = newRow.insertCell();
     cell.append(btn);
-
   });
 }
 
@@ -102,7 +101,7 @@ function getColumnHeaders(table, myLibrary) {
 
 const form = document.querySelector("form");
 
-form.addEventListener("submit", function(event) {
+form.addEventListener("submit", function (event) {
   event.preventDefault(); // Stop page from reloading
 
   // Read form values
@@ -119,24 +118,24 @@ form.addEventListener("submit", function(event) {
   }
 
   addBookToLibrary(bookName, author, readStatus);
-})
+});
 
 // Handle delete button clicks via event delegation on the table
 // One listener covers all rows, including ones added after page load
-document.getElementById("libraryTable").addEventListener("click", function(event) {
+document.getElementById("libraryTable").addEventListener("click", function (event) {
   if (event.target.tagName === "BUTTON") {
     const row = event.target.closest("tr");
 
     // Read the ID stored in data-id to find the matching book in the array
     const bookRowId = row.dataset.id;
-    const index = myLibrary.findIndex(book => book.id === bookRowId);
+    const index = myLibrary.findIndex((book) => book.id === bookRowId);
 
     // Remove the book from the MyLibrary array,
     myLibrary.splice(index, 1);
     // Remove this row in the  directly from the DOM (remove row from the table on screen)
     row.remove();
   }
-})
+});
 
 // test
 addBookToLibrary("Harry Potter & the Curse of the Honoured One", "Gojo", true);
