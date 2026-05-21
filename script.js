@@ -9,6 +9,10 @@ function Book(id, name, author, status) {
   this.status = status; // boolean: true = read, false = not read
 }
 
+Book.prototype.changeReadStatus = function() {
+  this.status = !(this.status);
+};
+
 // Adds a new book to the library and updates the display
 function addBookToLibrary(name, author, status) {
   // Generate a unique identifier for this book using the Crypto API,
@@ -52,24 +56,32 @@ function createBookTable(myLibrary) {
     newRow.dataset.id = objectElement.id;
 
     // Loop through each property of the book (id, name, author, status)
-    for (const key in objectElement) {
+    for (const key of Object.keys(objectElement)) {
       // Create a new cell in the row
       const cell = newRow.insertCell();
 
       // Add the book property value to the cell
       cell.textContent = objectElement[key];
 
+      const readStatusButton = document.createElement("button");
+      readStatusButton.type = "readStatusButton";
+      readStatusButton.className = "readStatusButton";
+
       // Override with readable text if the value is a boolean status
       if (objectElement[key] === true) {
-        cell.textContent = "Read";
+        cell.textContent = "";
+        readStatusButton.textContent = "Read";
+        cell.append(readStatusButton);
       } else if (objectElement[key] === false) {
-        cell.textContent = "Not Read";
+        cell.textContent = "";
+        readStatusButton.textContent = "Not Read";
+        cell.append(readStatusButton);
       }
     }
 
     // Create button element
     const btn = document.createElement("button");
-    btn.type = "button";
+    btn.type = "deleteButton";
     btn.textContent = "Delete";
     btn.className = "deleteButton";
 
@@ -120,10 +132,9 @@ form.addEventListener("submit", function (event) {
   addBookToLibrary(bookName, author, readStatus);
 });
 
-// Handle delete button clicks via event delegation on the table
-// One listener covers all rows, including ones added after page load
+// Listen for clicks anywhere on the table
 document.getElementById("libraryTable").addEventListener("click", function (event) {
-  if (event.target.tagName === "BUTTON") {
+  if (event.target.className === "deleteButton") {
     const row = event.target.closest("tr");
 
     // Read the ID stored in data-id to find the matching book in the array
@@ -134,6 +145,28 @@ document.getElementById("libraryTable").addEventListener("click", function (even
     myLibrary.splice(index, 1);
     // Remove this row in the  directly from the DOM (remove row from the table on screen)
     row.remove();
+  }
+});
+
+// Listen for clicks anywhere on the table
+document.getElementById("libraryTable").addEventListener("click", function (event) {
+  // Only act if the clicked element is a read status button
+  if (event.target.className === "readStatusButton") {
+    // Walk up the DOM to find the row this button belongs to
+    const row = event.target.closest("tr");
+
+    // Read the ID stored in data-id to find the matching book in the array
+    const bookRowId = row.dataset.id;
+
+    // Find the index of the book in myLibrary whose id matches the row's data-id
+    const index = myLibrary.findIndex((book) => book.id === bookRowId);
+
+    // Toggle the read status on the book object using the prototype method
+    myLibrary[index].changeReadStatus();
+
+    // Update the button text to reflect the new status
+    // If status is true → "Read", if false → "Not Read"
+    event.target.textContent = myLibrary[index].status ? "Read" : "Not Read";
   }
 });
 

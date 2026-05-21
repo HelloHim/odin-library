@@ -39,3 +39,8 @@ tr:nth-child(odd) td {
 caption {
   padding: 10px;
 }
+
+.readStatusButton {
+  /* Tell browser to never break the button text onto a 2nd line */
+  white-space: nowrap;
+}
